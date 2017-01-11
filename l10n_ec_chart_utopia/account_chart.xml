@@ -1,0 +1,2274 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <!-- Account Types -->
+        <record model="account.account.type" id="account.data_account_type_capital">
+            <field name="name">Capital</field>
+            <field name="code">capital</field>
+            <field name="report_type">asset</field>
+            <field name="close_method">balance</field>
+        </record>
+        <record model="account.account.type" id="account.data_account_type_stock">
+            <field name="name">Inventario</field>
+            <field name="code">stock</field>
+            <field name="report_type">asset</field>
+            <field name="close_method">balance</field>
+        </record>
+        <!-- Account Templates -->
+        <record model="account.account.template" id="0">
+            <field name="name">PLAN DE CTAS. ECUADOR</field>
+            <field name="code">0</field>
+            <field ref="account.data_account_type_view" name="user_type"/>
+            <field name="type">view</field>
+        </record>
+        <record model="account.account.template" id="1">
+            <field name="name">ACTIVO</field>
+            <field name="code">1.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="0" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101">
+            <field name="name">ACTIVO CORRIENTE</field>
+            <field name="code">1.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10101">
+            <field name="name">EFECTIVO Y EQUIVALENTES AL EFECTIVO</field>
+            <field name="code">1.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010101">
+            <field name="name">CAJA</field>
+            <field name="code">1.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101010101">
+            <field name="name">CAJA</field>
+            <field name="code">1.01.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="1010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010102">
+            <field name="name">BANCOS</field>
+            <field name="code">1.01.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101010201">
+            <field name="name">BANCO LOCAL</field>
+            <field name="code">1.01.01.02.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="1010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10101020101">
+            <field name="name">BANCO BOLIVARIANO CTA.502-501199-4</field>
+            <field name="code">1.01.01.02.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_bank" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102">
+            <field name="name">ACTIVOS FINANCIEROS</field>
+            <field name="code">1.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010205">
+            <field name="name">CUENTAS Y DOCUMENTOS POR COBRAR</field>
+            <field name="code">1.01.02.05.</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101020501">
+            <field name="name">CLIENTES</field>
+            <field name="code">1.01.02.05.01.</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010205" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102050101">
+            <field name="name">CLIENTES</field>
+            <field name="code">1.01.02.05.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_receivable" name="user_type"/>
+            <field name="type">receivable</field>
+            <field ref="101020501" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101020502">
+            <field name="name">EMPLEADOS</field>
+            <field name="code">1.01.02.05.02.</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010205" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102050201">
+            <field name="name">CUENTAS POR COBRAR EMPLEADOS</field>
+            <field name="code">1.01.02.05.02.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_receivable" name="user_type"/>
+            <field name="type">receivable</field>
+            <field ref="101020502" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102050202">
+            <field name="name">PRÉSTAMOS EMPLEADOS</field>
+            <field name="code">1.01.02.05.02.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_receivable" name="user_type"/>
+            <field name="type">receivable</field>
+            <field ref="101020502" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102050203">
+            <field name="name">ANTICIPOS A LIQUIDAR</field>
+            <field name="code">1.01.02.05.02.03</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_receivable" name="user_type"/>
+            <field name="type">receivable</field>
+            <field ref="101020502" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101020503">
+            <field name="name">OTRAS CUENTAS POR COBRAR</field>
+            <field name="code">1.01.02.05.03.</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010205" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102050301">
+            <field name="name">OTROS POR COBRAR</field>
+            <field name="code">1.01.02.05.03.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_receivable" name="user_type"/>
+            <field name="type">receivable</field>
+            <field ref="101020503" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010209">
+            <field name="name">(-) PROVISION POR CUENTAS INCOBRABLES</field>
+            <field name="code">1.01.02.09.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101020901">
+            <field name="name">(-) PROVISION POR CUENTAS INCOBRABLES</field>
+            <field name="code">1.01.02.09.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010209" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10102090101">
+            <field name="name">PROVISION CUENTAS INCOBRABLES CLIENTES</field>
+            <field name="code">1.01.02.09.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101020901" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10103">
+            <field name="name">INVENTARIOS</field>
+            <field name="code">1.01.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_stock" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010304">
+            <field name="name">INVENTARIOS DE SUMINISTROS O MATERIALES A SER CONSUMIDOS EN LA PRESTACION DE SERVICIO
+            </field>
+            <field name="code">1.01.03.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_stock" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="10103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010306">
+            <field name="name">INVENTARIOS DE PRODUCTOS TERMINADOS Y MERCADERIA EN ALMACEN - COMPRADO DE TERCEROS
+            </field>
+            <field name="code">1.01.03.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_stock" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="10103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010312">
+            <field name="name">OTROS INVENTARIOS</field>
+            <field name="code">1.01.03.12</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_stock" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="10103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10104">
+            <field name="name">SERVICIOS Y OTROS PAGOS ANTICIPADOS</field>
+            <field name="code">1.01.04.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010401">
+            <field name="name">SEGUROS PAGADOS POR ANTICIPADO</field>
+            <field name="code">1.01.04.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10104" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101040101">
+            <field name="name">SEGUROS PAGADOS POR ANTICIPADO</field>
+            <field name="code">1.01.04.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10104010101">
+            <field name="name">SEGUROS PAGADOS POR ANTICIPADO VEHICULOS</field>
+            <field name="code">1.01.04.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101040101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010403">
+            <field name="name">ANTICIPO PROVEEDORES</field>
+            <field name="code">1.01.04.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10104" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101040301">
+            <field name="name">ANTICIPO PROVEEDORES</field>
+            <field name="code">1.01.04.03.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010403" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10104030101">
+            <field name="name">ANTICIPO PROVEEDORES NACIONALES</field>
+            <field name="code">1.01.04.03.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101040301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105">
+            <field name="name">ACTIVOS POR IMPUESTOS CORRIENTES</field>
+            <field name="code">1.01.05.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1010501">
+            <field name="name">IMPUESTOS CORRIENTES</field>
+            <field name="code">1.01.05.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10105" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101050101">
+            <field name="name">CRÉDITO TRIBUTARIO DEL IVA</field>
+            <field name="code">1.01.05.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010501" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010101">
+            <field name="name">12% IVA CREDITO TRIBUTARIO</field>
+            <field name="code">1.01.05.01.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010105">
+            <field name="name">12% IVA CREDITO TRIBUTARIO REEMBOLSOS</field>
+            <field name="code">1.01.05.01.01.05</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010106">
+            <field name="name">70% IVA RETENIDO EN SERVICIOS</field>
+            <field name="code">1.01.05.01.01.06</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010107">
+            <field name="name">30% IVA RETENIDO EN BIENES</field>
+            <field name="code">1.01.05.01.01.07</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010108">
+            <field name="name">100% IVA RETENIDO EN SERVICIOS</field>
+            <field name="code">1.01.05.01.01.08</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="101050102">
+            <field name="name">CRÉDITO TRIBUTARIO IMPUESTO RENTA</field>
+            <field name="code">1.01.05.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1010501" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010201">
+            <field name="name">RETENCIONES EN LA FUENTE</field>
+            <field name="code">1.01.05.01.02.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10105010202">
+            <field name="name">ANTICIPO IMPUESTO RENTA</field>
+            <field name="code">1.01.05.01.02.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="101050102" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="102">
+            <field name="name">ACTIVO NO CORRIENTE</field>
+            <field name="code">1.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201">
+            <field name="name">ACTIVO TANGIBLE</field>
+            <field name="code">1.02.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="1020101">
+            <field name="name">PROPIEDAD PLANTA Y EQUIPO</field>
+            <field name="code">1.02.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="10201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="102010101">
+            <field name="name">NO DEPRECIABLES</field>
+            <field name="code">1.02.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1020101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010101">
+            <field name="name">TERRENOS</field>
+            <field name="code">1.02.01.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="102010102">
+            <field name="name">DEPRECIABLES</field>
+            <field name="code">1.02.01.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1020101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010201">
+            <field name="name">EDIFICIOS</field>
+            <field name="code">1.02.01.01.02.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010202">
+            <field name="name">MUEBLES Y ENSERES</field>
+            <field name="code">1.02.01.01.02.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010203">
+            <field name="name">MUEBLES DE OFICINA</field>
+            <field name="code">1.02.01.01.02.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010204">
+            <field name="name">EQUIPO DE OFICINA</field>
+            <field name="code">1.02.01.01.02.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010205">
+            <field name="name">EQUIPO DE COMPUTACIÓN</field>
+            <field name="code">1.02.01.01.02.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010206">
+            <field name="name">VEHICULOS</field>
+            <field name="code">1.02.01.01.02.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="102010103">
+            <field name="name">DEPRECIACIÓN ACUMULADA</field>
+            <field name="code">1.02.01.01.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="1020101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010301">
+            <field name="name">DEP. ACUM. EDIFICIOS</field>
+            <field name="code">1.02.01.01.03.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010302">
+            <field name="name">DEP. ACUM. MUEBLES Y ENSERES</field>
+            <field name="code">1.02.01.01.03.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010303">
+            <field name="name">DEP. ACUM. MUEBLES DE OFICINA</field>
+            <field name="code">1.02.01.01.03.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010304">
+            <field name="name">DEP. ACUM. EQUIPO OFICINA</field>
+            <field name="code">1.02.01.01.03.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010305">
+            <field name="name">DEP ACUM EQUIPO COMPUTO</field>
+            <field name="code">1.02.01.01.03.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010306">
+            <field name="name">DEP. ACUM. VEHÍCULOS</field>
+            <field name="code">1.02.01.01.03.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="10201010307">
+            <field name="name">DEP. ACUM. ACTIVOS</field>
+            <field name="code">1.02.01.01.03.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_asset" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="102010103" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="2">
+            <field name="name">PASIVO</field>
+            <field name="code">2.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="0" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201">
+            <field name="name">PASIVO CORRIENTE</field>
+            <field name="code">2.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20101">
+            <field name="name">PASIVOS CORRIENTES</field>
+            <field name="code">2.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2010101">
+            <field name="name">CUENTAS POR PAGAR</field>
+            <field name="code">2.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201010101">
+            <field name="name">CUENTAS Y DOCUMENTOS POR PAGAR</field>
+            <field name="code">2.01.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20101010101">
+            <field name="name">PROVEEDORES</field>
+            <field name="code">2.01.01.01.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="201010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20101010102">
+            <field name="name">NOMINA POR PAGAR</field>
+            <field name="code">2.01.01.01.01.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="201010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20101010103">
+            <field name="name">CUENTAS POR PAGAR SANDRA BARROS</field>
+            <field name="code">2.01.01.01.01.03</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="201010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20101010104">
+            <field name="name">PROVISIONES</field>
+            <field name="code">2.01.01.01.01.04</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="201010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20101010105">
+            <field name="name">CUENTAS POR PAGAR TERCEROS</field>
+            <field name="code">2.01.01.01.01.05</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="201010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20101010106">
+            <field name="name">PROVEEDORES 2012</field>
+            <field name="code">2.01.01.01.01.06</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="201010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20104">
+            <field name="name">OBLIGACIONES CORRIENTES CON INSTITUCIONES FINANCIERAS</field>
+            <field name="code">2.01.04.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2010401">
+            <field name="name">LOCALES</field>
+            <field name="code">2.01.04.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20104" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201040101">
+            <field name="name">BANCO BOLIVARIANO</field>
+            <field name="code">2.01.04.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20104010101">
+            <field name="name">BOLIVARIANO</field>
+            <field name="code">2.01.04.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201040101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20104010106">
+            <field name="name">TARJETA CORPORATIVA</field>
+            <field name="code">2.01.04.01.01.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201040101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="20107">
+            <field name="name">OTRAS OBLIGACIONES CORRIENTES</field>
+            <field name="code">2.01.07.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2010701">
+            <field name="name">OBLIGACIONES ADMINISTRACION TRIBUTARIA</field>
+            <field name="code">2.01.07.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20107" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201070101">
+            <field name="name">IMPUESTO A LA RENTA</field>
+            <field name="code">2.01.07.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010101">
+            <field name="name">RETENCION 1% POR PAGAR</field>
+            <field name="code">2.01.07.01.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010102">
+            <field name="name">RETENCION 2% POR PAGAR</field>
+            <field name="code">2.01.07.01.01.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010103">
+            <field name="name">RETENCION 8% POR PAGAR</field>
+            <field name="code">2.01.07.01.01.03</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010104">
+            <field name="name">RETENCION 10% POR PAGAR</field>
+            <field name="code">2.01.07.01.01.04</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010107">
+            <field name="name">Ret 2% Provisional</field>
+            <field name="code">2.01.07.01.01.07</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010108">
+            <field name="name">Ret.1% provisional</field>
+            <field name="code">2.01.07.01.01.08</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010109">
+            <field name="name">Ret 10% provisional</field>
+            <field name="code">2.01.07.01.01.09</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010110">
+            <field name="name">IMP. RENTA EN RELACIÓN DE DEPENDENCIA</field>
+            <field name="code">2.01.07.01.01.10</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010111">
+            <field name="name">IMPUESTO A LA RENTA COMPAÑÍA</field>
+            <field name="code">2.01.07.01.01.11</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010112">
+            <field name="name">22% IMPUESTO RENTA PAGOS AL EXTERIOR</field>
+            <field name="code">2.01.07.01.01.12</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201070102">
+            <field name="name">12% IMPUESTO AL VALOR AGREGADO</field>
+            <field name="code">2.01.07.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010201">
+            <field name="name">12% IVA EN VENTAS</field>
+            <field name="code">2.01.07.01.02.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010202">
+            <field name="name">30% RET. IVA</field>
+            <field name="code">2.01.07.01.02.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010203">
+            <field name="name">70% RET. IVA</field>
+            <field name="code">2.01.07.01.02.03</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010204">
+            <field name="name">100% RET. IVA.</field>
+            <field name="code">2.01.07.01.02.04</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107010205">
+            <field name="name">IMPUESTOS POR PAGAR 2012</field>
+            <field name="code">2.01.07.01.02.05</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2010703">
+            <field name="name">OBLIGACIONES CON EL IESS</field>
+            <field name="code">2.01.07.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20107" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201070301">
+            <field name="name">OBLIGACIONES CON EL IESS</field>
+            <field name="code">2.01.07.03.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2010703" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107030101">
+            <field name="name">12,15% APORTE PATRONAL</field>
+            <field name="code">2.01.07.03.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107030102">
+            <field name="name">9,35% APORTE PERSONAL</field>
+            <field name="code">2.01.07.03.01.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107030103">
+            <field name="name">PRESTAMOS QUIROGRAFARIOS IESS</field>
+            <field name="code">2.01.07.03.01.03</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107030104">
+            <field name="name">PRESTAMOS HIPOTECARIOS IESS</field>
+            <field name="code">2.01.07.03.01.04</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2010704">
+            <field name="name">POR BENEFICIOS DE LEY EMPLEADOS</field>
+            <field name="code">2.01.07.04.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20107" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201070401">
+            <field name="name">POR BENEFICIOS DE LEY EMPLEADOS</field>
+            <field name="code">2.01.07.04.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2010704" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107040101">
+            <field name="name">DÉCIMO TERCER SUELDO</field>
+            <field name="code">2.01.07.04.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107040102">
+            <field name="name">DÉCIMO CUARTO SUELDO</field>
+            <field name="code">2.01.07.04.01.02</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107040103">
+            <field name="name">VACACIONES</field>
+            <field name="code">2.01.07.04.01.03</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107040104">
+            <field name="name">FONDO DE RESERVA</field>
+            <field name="code">2.01.07.04.01.04</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20107040105">
+            <field name="name">PARTICIPACION LABORAL POR PAGAR</field>
+            <field name="code">2.01.07.04.01.05</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201070401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20110">
+            <field name="name">ANTICIPOS DE CLIENTES</field>
+            <field name="code">2.01.10.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2011001">
+            <field name="name">ANTICIPOS DE CLIENTES</field>
+            <field name="code">2.01.10.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20110" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="201100101">
+            <field name="name">LOCALES</field>
+            <field name="code">2.01.10.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2011001" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20110010101">
+            <field name="name">ANTICIPOS DE CLIENTES</field>
+            <field name="code">2.01.10.01.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="201100101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="202">
+            <field name="name">PASIVO NO CORRIENTE</field>
+            <field name="code">2.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20201">
+            <field name="name">PASIVOS POR CONTRATOS DE ARRENDAMIENTO FINANCIERO</field>
+            <field name="code">2.02.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20202">
+            <field name="name">CUENTAS Y DOCUMENTOS POR PAGAR</field>
+            <field name="code">2.02.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2020201">
+            <field name="name">CUENTAS Y DOCUMENTOS POR PAGAR</field>
+            <field name="code">2.02.02.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="202020101">
+            <field name="name">CUENTAS Y DOCUMENTOS POR PAGAR</field>
+            <field name="code">2.02.02.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2020201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20202010101">
+            <field name="name">PROVEEDORES</field>
+            <field name="code">2.02.02.01.01.01</field>
+            <field name="reconcile" eval="True"/>
+            <field ref="account.data_account_type_payable" name="user_type"/>
+            <field name="type">payable</field>
+            <field ref="202020101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20203">
+            <field name="name">OBLIGACIONES FINANCIERAS</field>
+            <field name="code">2.02.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2020301">
+            <field name="name">OBLIGACIONES FINANCIERAS</field>
+            <field name="code">2.02.03.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20203" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="202030101">
+            <field name="name">LOCALES</field>
+            <field name="code">2.02.03.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2020301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20203010101">
+            <field name="name">BOLIVARIANO</field>
+            <field name="code">2.02.03.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="202030101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20206">
+            <field name="name">ANTICIPOS DE CLIENTES</field>
+            <field name="code">2.02.06.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2020601">
+            <field name="name">ANTICIPOS DE CLIENTES</field>
+            <field name="code">2.02.06.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20206" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="202060101">
+            <field name="name">LOCALES</field>
+            <field name="code">2.02.06.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2020601" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20206010101">
+            <field name="name">ANTICIPOS RECIBIDOS</field>
+            <field name="code">2.02.06.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="202060101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20207">
+            <field name="name">PROVISIÓN POR BENEFICIOS A EMPLEADOS</field>
+            <field name="code">2.02.07.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="2020701">
+            <field name="name">BENEFICIOS ORDEN SOCIAL</field>
+            <field name="code">2.02.07.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="20207" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="202070101">
+            <field name="name">BENEFICIOS ORDEN SOCIAL</field>
+            <field name="code">2.02.07.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="2020701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20207010101">
+            <field name="name">JUBILACION PATRONAL</field>
+            <field name="code">2.02.07.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="202070101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="20207010102">
+            <field name="name">DESAHUCIO</field>
+            <field name="code">2.02.07.01.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_liability" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="202070101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="3">
+            <field name="name">PATRIMONIO NETO</field>
+            <field name="code">3.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="0" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="301">
+            <field name="name">CAPITAL</field>
+            <field name="code">3.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="3" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="30101">
+            <field name="name">CAPITAL PAGADO</field>
+            <field name="code">3.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="3010101">
+            <field name="name">CAPITAL PAGADO</field>
+            <field name="code">3.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="30101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="301010101">
+            <field name="name">CAPITAL NACIONAL</field>
+            <field name="code">3.01.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="3010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="30101010101">
+            <field name="name">ACCIONISTA 1</field>
+            <field name="code">3.01.01.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="301010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="30101010102">
+            <field name="name">ACCIONISTA 2</field>
+            <field name="code">3.01.01.01.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="301010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="302">
+            <field name="name">FUTURAS CAPITALIZACIONES</field>
+            <field name="code">3.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="3" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="30201">
+            <field name="name">APORTES FUTURAS CAPITALIZACIONES</field>
+            <field name="code">3.02.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="302" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="306">
+            <field name="name">RESULTADOS</field>
+            <field name="code">3.06.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="3" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="30601">
+            <field name="name">RESULTADOS ACUMULADOS</field>
+            <field name="code">3.06.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="306" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="3060101">
+            <field name="name">RESULTADOS ACUMULADOS</field>
+            <field name="code">3.06.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="30601" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="306010101">
+            <field name="name">PERDIDAS ACUMULADAS</field>
+            <field name="code">3.06.01.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="3060101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="306010102">
+            <field name="name">UTILIDADES ACUMULADAS</field>
+            <field name="code">3.06.01.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_capital" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="3060101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="4">
+            <field name="name">INGRESOS</field>
+            <field name="code">4.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="0" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="401">
+            <field name="name">ACTIVIDADES ORDINARIAS</field>
+            <field name="code">4.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="4" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="40101">
+            <field name="name">ACTIVIDADES ORDINARIAS</field>
+            <field name="code">4.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="4010102">
+            <field name="name">PRESTACIÓN DE SERVICIOS</field>
+            <field name="code">4.01.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="40101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="401010201">
+            <field name="name">ORGANIZACION EVENTOS</field>
+            <field name="code">4.01.01.02.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="4010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="401010202">
+            <field name="name">DISEÑO GRAFICO</field>
+            <field name="code">4.01.01.02.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="4010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="4010108">
+            <field name="name">OTROS INGRESOS</field>
+            <field name="code">4.01.01.08.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="40101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="401010801">
+            <field name="name">OTROS INGRESOS</field>
+            <field name="code">4.01.01.08.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="4010108" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="40101080101">
+            <field name="name">VENTA DE ACTIVOS FIJOS</field>
+            <field name="code">4.01.01.08.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="401010801" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="40101080102">
+            <field name="name">OTROS INGRESOS</field>
+            <field name="code">4.01.01.08.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="401010801" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="5">
+            <field name="name">COSTOS</field>
+            <field name="code">5.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="0" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="501">
+            <field name="name">PRESTACION DE SERVICIOS</field>
+            <field name="code">5.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="5" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101">
+            <field name="name">PRESTACION DE SERVICIOS</field>
+            <field name="code">5.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="501" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="5010102">
+            <field name="name">PRESTACION DE SERVICIOS</field>
+            <field name="code">5.01.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="50101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="501010201">
+            <field name="name">EVENTOS</field>
+            <field name="code">5.01.01.02.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="5010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020101">
+            <field name="name">TRANSPORTE</field>
+            <field name="code">5.01.01.02.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020102">
+            <field name="name">SERVICIOS ARTISTICOS</field>
+            <field name="code">5.01.01.02.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020103">
+            <field name="name">SERVICIO DE CATERING</field>
+            <field name="code">5.01.01.02.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020104">
+            <field name="name">HOTELES, HOSTERÍAS, ENTRE OTROS</field>
+            <field name="code">5.01.01.02.01.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020105">
+            <field name="name">DECORACIÓN</field>
+            <field name="code">5.01.01.02.01.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020106">
+            <field name="name">ALQUILER DE EQUIPOS</field>
+            <field name="code">5.01.01.02.01.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020107">
+            <field name="name">SERVICIOS DE IMPRESION</field>
+            <field name="code">5.01.01.02.01.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020108">
+            <field name="name">GASTOS DE VIAJE</field>
+            <field name="code">5.01.01.02.01.08</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101020109">
+            <field name="name">OTROS SERVICIOS</field>
+            <field name="code">5.01.01.02.01.09</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="5010103">
+            <field name="name">MATERIALES Y EQUIPOS</field>
+            <field name="code">5.01.01.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="50101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="501010301">
+            <field name="name">MATERIALES Y EQUIPOS PARA EVENTOS</field>
+            <field name="code">5.01.01.03.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="5010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="50101030101">
+            <field name="name">SUMINISTROS PARA EVENTOS</field>
+            <field name="code">5.01.01.03.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="501010301" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="502">
+            <field name="name">GASTOS</field>
+            <field name="code">5.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="5" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="50204">
+            <field name="name">OTROS GASTOS</field>
+            <field name="code">5.02.04.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="502" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="5020402">
+            <field name="name">OTROS</field>
+            <field name="code">5.02.04.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_expense" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="50204" name="parent_id"/>
+        </record>
+
+
+        <record model="account.account.template" id="6">
+            <field name="name">GASTOS</field>
+            <field name="code">6.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="0" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="601">
+            <field name="name">GASTOS ADMINISTRATIVOS</field>
+            <field name="code">6.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101">
+            <field name="name">GASTOS ADMINISTRATIVOS</field>
+            <field name="code">6.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="601" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010101">
+            <field name="name">GASTOS DE PERSONAL</field>
+            <field name="code">6.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010101">
+            <field name="name">SUELDOS Y SALARIOS Y DEMAS REMUNERACIONES</field>
+            <field name="code">6.01.01.01.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010102">
+            <field name="name">HORAS EXTRAS 50%</field>
+            <field name="code">6.01.01.01.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="60101010103">
+            <field name="name">HORAS EXTRAS 100%</field>
+            <field name="code">6.01.01.01.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010104">
+            <field name="name">COMISIONES</field>
+            <field name="code">6.01.01.01.01.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010105">
+            <field name="name">BONOS</field>
+            <field name="code">6.01.01.01.01.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010106">
+            <field name="name">APORTE PERSONAL ASUMIDO POR LA EMPRESA</field>
+            <field name="code">6.01.01.01.01.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010107">
+            <field name="name">APORTE PATRONAL</field>
+            <field name="code">6.01.01.01.01.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010108">
+            <field name="name">DÉCIMO TERCER SUELDO</field>
+            <field name="code">6.01.01.01.01.08</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010109">
+            <field name="name">DÉCIMO CUARTO SUELDO</field>
+            <field name="code">6.01.01.01.01.09</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010110">
+            <field name="name">VACACIONES</field>
+            <field name="code">6.01.01.01.01.10</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010111">
+            <field name="name">FONDOS DE RESERVA</field>
+            <field name="code">6.01.01.01.01.11</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010112">
+            <field name="name">GASTO JUBILACION PATRONAL</field>
+            <field name="code">6.01.01.01.01.12</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010113">
+            <field name="name">GASTO DESAHUCIO</field>
+            <field name="code">6.01.01.01.01.13</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010114">
+            <field name="name">GASTOS DE SALUD</field>
+            <field name="code">6.01.01.01.01.14</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010115">
+            <field name="name">PARTICIPACION LABORAL</field>
+            <field name="code">6.01.01.01.01.15</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010102">
+            <field name="name">BENEFICIOS EMPRESARIALES</field>
+            <field name="code">6.01.01.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010202">
+            <field name="name">ALIMENTACIÓN</field>
+            <field name="code">6.01.01.01.02.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010203">
+            <field name="name">BENEFICIO PERSONAL -VIAJE AL EXTERIOR</field>
+            <field name="code">6.01.01.01.02.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010204">
+            <field name="name">CAPACITACIÓN DEL PERSONAL</field>
+            <field name="code">6.01.01.01.02.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010205">
+            <field name="name">AGAZAJOS AL PERSONAL</field>
+            <field name="code">6.01.01.01.02.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010206">
+            <field name="name">IMPUESTO A LA RENTA EMPLEADOS</field>
+            <field name="code">6.01.01.01.02.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101010207">
+            <field name="name">TRANSPORTE</field>
+            <field name="code">6.01.01.01.02.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010102" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="6010102">
+            <field name="name">ARRIENDOS Y SERVICIOS BASICOS</field>
+            <field name="code">6.01.01.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010201">
+            <field name="name">ARRIENDOS Y ALQUILERES</field>
+            <field name="code">6.01.01.02.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020101">
+            <field name="name">ARRIENDO OFICINAS</field>
+            <field name="code">6.01.01.02.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020102">
+            <field name="name">ALICUOTA CONDOMINIO</field>
+            <field name="code">6.01.01.02.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020103">
+            <field name="name">ARRIENDO PARQUEADERO</field>
+            <field name="code">6.01.01.02.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010202">
+            <field name="name">SERVICIOS</field>
+            <field name="code">6.01.01.02.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010102" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020201">
+            <field name="name">SERVICIO DE INTERNET</field>
+            <field name="code">6.01.01.02.02.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020203">
+            <field name="name">CONSUMOS TELÉFONOS CELULARES</field>
+            <field name="code">6.01.01.02.02.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020204">
+            <field name="name">CONSUMOS TELÉFONOS CONVENCIONALES</field>
+            <field name="code">6.01.01.02.02.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020205">
+            <field name="name">ENERGÍA ELÉCTRICA</field>
+            <field name="code">6.01.01.02.02.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020206">
+            <field name="name">Servicios de Mensajería</field>
+            <field name="code">6.01.01.02.02.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020207">
+            <field name="name">SERVICIO TELEVISIÓN POR CABLE</field>
+            <field name="code">6.01.01.02.02.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101020208">
+            <field name="name">Comisión y Servicios Bancarios</field>
+            <field name="code">6.01.01.02.02.08</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010202" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="6010103">
+            <field name="name">HONORARIOS PROFESIONALES</field>
+            <field name="code">6.01.01.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010301">
+            <field name="name">HONORARIOS PROFESIONALES</field>
+            <field name="code">6.01.01.03.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101030101">
+            <field name="name">SERVICIOS DE CONTABILIDAD</field>
+            <field name="code">6.01.01.03.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101030102">
+            <field name="name">MANTENIMIENTO INFORMÁTICO</field>
+            <field name="code">6.01.01.03.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101030105">
+            <field name="name">HONORARIOS LEGALES</field>
+            <field name="code">6.01.01.03.01.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010301" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101030107">
+            <field name="name">OTROS SERVICIOS</field>
+            <field name="code">6.01.01.03.01.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010301" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="6010104">
+            <field name="name">SUMINISTROS Y MATERIALES</field>
+            <field name="code">6.01.01.04.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="601010401">
+            <field name="name">SUMINISTROS Y MATERIALES DE OFICINA</field>
+            <field name="code">6.01.01.04.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010104" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="60101040101">
+            <field name="name">PAPELERIA</field>
+            <field name="code">6.01.01.04.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040102">
+            <field name="name">EQUIPO DE OFICINA</field>
+            <field name="code">6.01.01.04.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040103">
+            <field name="name">MUEBLES DE OFICINA</field>
+            <field name="code">6.01.01.04.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040104">
+            <field name="name">ACCESORIOS DE OFICINA</field>
+            <field name="code">6.01.01.04.01.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040105">
+            <field name="name">IMPRENTA</field>
+            <field name="code">6.01.01.04.01.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010401" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010402">
+            <field name="name">SUMINISTROS Y MATERIALES INFORMÁTICOS</field>
+            <field name="code">6.01.01.04.02.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010104" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040201">
+            <field name="name">SUMINISTROS DE COMPUTACIÓN</field>
+            <field name="code">6.01.01.04.02.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010402" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040202">
+            <field name="name">LICENCIAS INFORMÁTICAS</field>
+            <field name="code">6.01.01.04.02.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010402" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010403">
+            <field name="name">SUMINISTROS Y MATERIALES DE ASEO</field>
+            <field name="code">6.01.01.04.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010104" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101040301">
+            <field name="name">SUMINISTROS DE LIMPIEZA Y ASEO</field>
+            <field name="code">6.01.01.04.03.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010403" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010105">
+            <field name="name">MANTENIMIENTO</field>
+            <field name="code">6.01.01.05.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010501">
+            <field name="name">OFICINAS Y EQUIPOS</field>
+            <field name="code">6.01.01.05.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010105" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101050101">
+            <field name="name">MANTENIMIENTO OFICINAS</field>
+            <field name="code">6.01.01.05.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010501" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="60101050102">
+            <field name="name">MANTENIMIENTO EQUIPOS</field>
+            <field name="code">6.01.01.05.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010501" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="60101050103">
+            <field name="name">MANTENIMIENTO VEHÍCULOS</field>
+            <field name="code">6.01.01.05.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010501" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="6010106">
+            <field name="name">PUBLICIDAD Y PROMOCION</field>
+            <field name="code">6.01.01.06.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010601">
+            <field name="name">GASTOS DE REPRESENTACION</field>
+            <field name="code">6.01.01.06.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="6010106" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010602">
+            <field name="name">GASTOS CON CLIENTES</field>
+            <field name="code">6.01.01.06.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="6010106" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010107">
+            <field name="name">DEPRECIACIONES Y AMORTIZACIONES</field>
+            <field name="code">6.01.01.07.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010701">
+            <field name="name">DEPRECIACIONES</field>
+            <field name="code">6.01.01.07.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010107" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101070101">
+            <field name="name">DEPRECIACIÓN EQUIPO DE OFICINA</field>
+            <field name="code">6.01.01.07.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101070102">
+            <field name="name">DEPRECIACION EQUIPO COMPUTO</field>
+            <field name="code">6.01.01.07.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101070103">
+            <field name="name">DEPRECIACION MUEBLES DE OFICINA</field>
+            <field name="code">6.01.01.07.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101070104">
+            <field name="name">DEPRECIACION ACTIVOS</field>
+            <field name="code">6.01.01.07.01.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101070105">
+            <field name="name">PROVISION CUENTAS INCOBRABLES</field>
+            <field name="code">6.01.01.07.01.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601010701" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010109">
+            <field name="name">GASTOS DE VIAJE</field>
+            <field name="code">6.01.01.09.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010901">
+            <field name="name">COMBUSTIBLE</field>
+            <field name="code">6.01.01.09.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="6010109" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601010902">
+            <field name="name">PASAJES</field>
+            <field name="code">6.01.01.09.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="6010109" name="parent_id"/>
+        </record>
+
+        <record model="account.account.template" id="6010110">
+            <field name="name">AFILIACIONES</field>
+            <field name="code">6.01.01.10.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601011001">
+            <field name="name">AFILIACIONES Y SUSCRIPCIONES</field>
+            <field name="code">6.01.01.10.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010110" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101100101">
+            <field name="name">CAMARA DE COMERCIO DE QUITO</field>
+            <field name="code">6.01.01.10.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011001" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101100102">
+            <field name="name">Suscripción Prensa</field>
+            <field name="code">6.01.01.10.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011001" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010111">
+            <field name="name">CONTRIBUCIONES</field>
+            <field name="code">6.01.01.11.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601011103">
+            <field name="name">CONTRIBUCIONES</field>
+            <field name="code">6.01.01.11.03.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010111" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101110301">
+            <field name="name">PATENTE Y 1.5 POR MIL</field>
+            <field name="code">6.01.01.11.03.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101110302">
+            <field name="name">CONTRIBUCIÓN S.C.</field>
+            <field name="code">6.01.01.11.03.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101110303">
+            <field name="name">IMPUESTO A LA RENTA</field>
+            <field name="code">6.01.01.11.03.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011103" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601011104">
+            <field name="name">MATRICULAS</field>
+            <field name="code">6.01.01.11.04.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010111" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101110401">
+            <field name="name">MATRICULAS VEHÍCULO</field>
+            <field name="code">6.01.01.11.04.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011104" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010112">
+            <field name="name">NO DEDUCIBLES</field>
+            <field name="code">6.01.01.12.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601011201">
+            <field name="name">NO DEDUCIBLES</field>
+            <field name="code">6.01.01.12.01.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="6010112" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120101">
+            <field name="name">RETENCION ASUMIDAS</field>
+            <field name="code">6.01.01.12.01.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120102">
+            <field name="name">VARIOS</field>
+            <field name="code">6.01.01.12.01.02</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120103">
+            <field name="name">LIMPIEZA</field>
+            <field name="code">6.01.01.12.01.03</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120104">
+            <field name="name">GASTOS DE VIAJE AL EXTERIOR</field>
+            <field name="code">6.01.01.12.01.04</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120105">
+            <field name="name">GASTOS DE VIAJE NACIONALES</field>
+            <field name="code">6.01.01.12.01.05</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120106">
+            <field name="name">MOVILIZACION</field>
+            <field name="code">6.01.01.12.01.06</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="60101120107">
+            <field name="name">OTROS NO DEDUCIBLES</field>
+            <field name="code">6.01.01.12.01.07</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="601011201" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="6010113">
+            <field name="name">GASTOS FINANCIEROS</field>
+            <field name="code">6.01.01.13.</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">view</field>
+            <field ref="60101" name="parent_id"/>
+        </record>
+        <record model="account.account.template" id="601011301">
+            <field name="name">INTERÉS BANCARIO</field>
+            <field name="code">6.01.01.13.01</field>
+            <field name="reconcile" eval="False"/>
+            <field ref="account.data_account_type_income" name="user_type"/>
+            <field name="type">other</field>
+            <field ref="6010113" name="parent_id"/>
+        </record>
+
+        <record id="ec_chart_template" model="account.chart.template">
+            <field name="name">Ecuador - Plan de Cuentas Utopia</field>
+            <field name="account_root_id" ref="0"/>
+            <field name="bank_account_view_id" ref="10101020101"/>
+            <field name="property_account_receivable" ref="10102050101"/>
+            <field name="property_account_payable" ref="20101010101"/>
+            <field name="property_account_expense_categ" ref="5020402"/>
+            <field name="property_account_income_categ" ref=""/>
+        </record>
+        <record id="ec_chart_template_value" model="ir.values">
+            <field name="name">Ecuador - Plan de Cuentas Utopia</field>
+            <field name="model">account.chart.template</field>
+            <field name="key">default</field>
+            <field name="res_id" ref="ec_chart_template"/>
+            <field name="value" ref="base.USD"/>
+        </record>
+    </data>
+</openerp>
