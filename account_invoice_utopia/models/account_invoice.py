@@ -1,27 +1,33 @@
 # -*- coding: utf-8 -*-
+import pytz
 
 from openerp import models, fields, api
 from openerp.tools.translate import _
-import openerp.addons.decimal_precision as dp
-import re
-from datetime import datetime, date, time, timedelta
-from openerp.exceptions import ValidationError, except_orm, RedirectWarning
+from datetime import datetime
+from openerp.exceptions import except_orm
 
 
 class account_invoice(models.Model):
     _inherit = "account.invoice"
 
-    x_con_iva = fields.Monetary(string="Con IVA", compute="_get_total", store=True)
+    start_time = fields.Datetime(string='Hora Inicio', required=True, default=lambda self: self._get_current_time())
+    end_time = fields.Datetime(string='Hora Fin', required=True, default=lambda self: self._get_current_time())
 
-    @api.one
-    @api.depends('amount_untaxed', 'tax_line_ids.amount', 'tax_line_ids.x_base')
-    def _get_total(self):
-        con_iva = 0
-        valor_iva = 0
-        for line in self.tax_line_ids:
-            if line.tax_id.x_tipo_impuesto == 'imp':
-                con_iva += line.x_base
-                valor_iva += line.amount
-        self.x_valor_iva = valor_iva
-        self.x_con_iva = con_iva
-        self.x_total = self.amount_untaxed + valor_iva
+    date_invoice = fields.Date(string='Invoice Date', default=lambda self: self._get_current_date(),
+                               readonly=True, states={'draft': [('readonly', False)]}, index=True,
+                               help="Keep empty to use the current date", copy=False, required=True)
+
+    @api.model
+    def _get_current_time(self):
+        date_now = pytz.UTC.localize(datetime.now(), is_dst=False)
+        return date_now.strftime("%Y-%m-%d %H:%M:%S")
+
+    @api.model
+    def _get_current_date(self):
+        return fields.Date.context_today(self)
+
+    @api.onchange('start_time', 'end_time')
+    def _validate_date_time(self):
+        if self.start_time > self.end_time:
+            raise except_orm(_('Warning'), _('La fecha y hora de inicio, no puede ser mayor a la de fin.'))
+        return True
