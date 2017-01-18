@@ -7,13 +7,15 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='date_invoice']" position="after">
+                <xpath expr="//field[@name='partner_id']" position="after">
                     <!-- Add your fields or attributes here -->
                     <field name="start_time"/>
-                    <field name="end_time"/>
                     <field name="room_number"/>
                 </xpath>
-
+                <xpath expr="//field[@name='date_invoice']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="end_time"/>
+                </xpath>
             </field>
         </record>
     </data>
