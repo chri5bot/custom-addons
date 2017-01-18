@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import pytz
-
 from openerp import models, fields, api
 from openerp.tools.translate import _
 from datetime import datetime
@@ -28,7 +27,7 @@ class account_invoice(models.Model):
         return fields.Date.context_today(self)
 
     @api.onchange('start_time', 'end_time')
-    def _validate_date_time(self):
+    def _validate_current_time(self):
         admin_user = self.env['res.users'].browse(1)
         local_tz = pytz.timezone(admin_user.partner_id.tz)
         star_time = pytz.UTC.localize(datetime.strptime(self.start_time, "%Y-%m-%d %H:%M:%S"), is_dst=False)
