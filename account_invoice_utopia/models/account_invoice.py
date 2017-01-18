@@ -16,6 +16,7 @@ class account_invoice(models.Model):
     date_invoice = fields.Date(string='Invoice Date', default=lambda self: self._get_current_date(),
                                readonly=True, states={'draft': [('readonly', False)]}, index=True,
                                help="Keep empty to use the current date", copy=False, required=True)
+    room_number = fields.Integer(string='Número de habitacion', required=True, )
 
     @api.model
     def _get_current_time(self):
@@ -28,6 +29,11 @@ class account_invoice(models.Model):
 
     @api.onchange('start_time', 'end_time')
     def _validate_date_time(self):
-        if self.start_time > self.end_time:
+        admin_user = self.env['res.users'].browse(1)
+        local_tz = pytz.timezone(admin_user.partner_id.tz)
+        star_time = pytz.UTC.localize(datetime.strptime(self.start_time, "%Y-%m-%d %H:%M:%S"), is_dst=False)
+        star_time = star_time.astimezone(local_tz)
+        end_time = pytz.UTC.localize(datetime.strptime(self.end_time, "%Y-%m-%d %H:%M:%S"), is_dst=False)
+        end_time = end_time.astimezone(local_tz)
+        if star_time > end_time:
             raise except_orm(_('Warning'), _('La fecha y hora de inicio, no puede ser mayor a la de fin.'))
-        return True

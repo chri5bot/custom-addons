@@ -11,6 +11,7 @@
                     <!-- Add your fields or attributes here -->
                     <field name="start_time"/>
                     <field name="end_time"/>
+                    <field name="room_number"/>
                 </xpath>
 
             </field>
