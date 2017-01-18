@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    
+    	<template id="account_invoice_assets_backend" name="account invoice assets backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/account_invoice_zabyca/static/src/css/account_invoice.css"/>
+            </xpath>
+        </template>
+    
+    	<!-- facturas de cliente -->
+        <record id="view_account_invoice_zabyca_form" model="ir.ui.view">
+            <field name="name">view.account.invoice.zabyca.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+				<field name="payment_term_id" position="after">
+					<field name="x_tipo_documento" required="True" domain="[('show_in_sales', '=', True)]"
+						options="{'no_create_edit': True, 'no_quick_create': True, 'no_open': True}}" />
+				</field>
+				
+				<xpath expr="//field[@name='tax_line_ids']//field[@name='account_id']" position="after">
+					<field name="x_base"/>
+				</xpath>
+				
+				<field name="discount" position="after">
+					<field name="dis_valor"/>
+				</field>
+				
+				<field name="amount_untaxed" position="after">
+					<field name="x_con_iva"/>
+					<field name="x_valor_iva"/>
+					<!-- <field name="x_flete"/> -->
+					<field name="x_total"/>
+				</field>
+				
+				<field name="amount_tax" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</field>
+				
+				<field name="amount_total" position="attributes">
+					<attribute name="string">Total menos impuestos</attribute>
+				</field>
+            </field>
+        </record>
+        
+        <record id="view_invoice_tax_zab_tree" model="ir.ui.view">
+            <field name="name">account.invoice.tax.tree</field>
+            <field name="model">account.invoice.tax</field>
+            <field name="inherit_id" ref="account.view_invoice_tax_tree"/>
+            <field name="arch" type="xml">
+				<tree position="attributes">
+					<attribute name="create">false</attribute>
+					<attribute name="edit">false</attribute>
+					<attribute name="delete">false</attribute>
+				</tree>
+            </field>
+        </record>
+        <!-- facturas de proveedor -->
+        <record id="view_invoice_supplier_zabyca_form" model="ir.ui.view">
+            <field name="name">view.invoice.supplier.zabyca.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+				<button name="action_cancel_draft" position="before">
+					<button name="print_retention" string="Imprimir retención"
+							attrs="{'invisible':['|','|',('x_num_retencion','=', False), ('x_num_retencion','=', '0'),('state','not in',['open','paid'])]}"
+							class="oe_highlight" type="object" groups="account.group_account_invoice"/>
+				</button>
+				<field name="reference" position="attributes">
+					<attribute name="required">True</attribute>
+				</field>
+				<field name="date_due" position="after">
+					<field name="is_expense_tax" />
+					<field name="x_check_total" />
+				</field>				
+				<field name="reference" position="before">
+					<field name="x_tipo_documento_compra" required="True" domain="[('show_in_purchases', '=', True)]"
+						options="{'no_create_edit': True, 'no_quick_create': True, 'no_open': True}" />
+					<field name="x_sustento_tributario" required="True"
+						options="{'no_create_edit': True, 'no_quick_create': True, 'no_open': True}}" />
+				</field>
+				
+				<field name="reference" position="after">
+					<field name="x_autorizacion_sri" required="True" />
+					<field name="id" invisible='1'/>
+				</field>
+				<xpath expr="//field[@name='tax_line_ids']/tree" position="attributes">
+					<attribute name="create">false</attribute>
+					<attribute name="edit">false</attribute>
+					<attribute name="delete">false</attribute>
+				</xpath>
+				<field name="tax_line_ids" position="before">
+					<label string="Retención:" style="font-weight:bold;" 
+							attrs="{'invisible': ['|',('x_num_retencion','=', False), ('x_num_retencion', '=', '0')]}"/>
+                    <h3>
+                        <field name="x_num_retencion" class="oe_inline" context="{'ret_type': 'in_purchase', 'my_inv': id}"
+                        	attrs="{'invisible': ['|',('x_num_retencion','=', False), ('x_num_retencion', '=', '0')]}"
+                        	/>
+                    </h3>
+				</field>
+				<field name="discount" position="after">
+					<field name="dis_valor" groups="sale.group_discount_per_so_line"/>
+				</field>
+				<xpath expr="//field[@name='tax_line_ids']//field[@name='account_id']" position="after">
+					<field name="x_base"/>
+				</xpath>
+				
+				<field name="amount_total" position="attributes">
+					<attribute name="string">Total menos impuestos</attribute>
+				</field>
+				
+				<field name="amount_tax" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</field>
+				
+				<field name="amount_untaxed" position="after">
+					<field name="x_con_iva"/>
+					<field name="x_valor_iva"/>
+					<!-- <field name="x_flete"/> -->
+					<field name="x_total"/>
+				</field>
+            </field>
+        </record>
+
+		<menuitem action="account.action_account_moves_all_a" 
+					icon="STOCK_JUSTIFY_FILL" id="account.menu_action_account_moves_all" 
+					parent="account.menu_finance_entries" sequence="1" 
+					groups="account.group_account_manager" />
+
+    </data>
+</openerp>
