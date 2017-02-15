@@ -16,6 +16,9 @@
                     <!-- Add your fields or attributes here -->
                     <field name="end_time"/>
                 </xpath>
+                <!--<xpath expr="//page[@string='Other information']" position="attributes">-->
+                <!--<attribute name="attrs"></attribute>-->
+                <!--</xpath>-->
             </field>
         </record>
     </data>

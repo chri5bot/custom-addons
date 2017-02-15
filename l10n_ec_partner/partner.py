@@ -90,7 +90,7 @@ class ResPartner(models.Model):
     ced_ruc = fields.Char(
         'Cedula/ RUC',
         size=13,
-        required=True,
+        required=False,
         help='Identificación o Registro Unico de Contribuyentes')
     type_ced_ruc = fields.Selection([
         ('cedula', 'CEDULA'),
@@ -98,14 +98,14 @@ class ResPartner(models.Model):
         ('pasaporte', 'PASAPORTE')
     ],
         'Tipo ID',
-        required=True
+        required=False
     )
     tipo_persona = fields.Selection(
         [('6', 'Persona Natural'),
          ('9', 'Persona Juridica')],
         string='Persona',
-        required=True,
-        default='9'
+        required=False,
+        default='6'
     )
     is_company = fields.Boolean(default=True)
 
