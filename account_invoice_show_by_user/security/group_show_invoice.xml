@@ -5,7 +5,12 @@
         <record id="group_show_only_my_invoice" model="res.groups">
             <field name="name">show only my invoice</field>
         </record>
+        <record id="make_invisible" model="res.groups">
+            <field name="name">Invisible</field>
+        </record>
+
     </data>
+
 
     <data noupdate="1">
         <record id="invoice_user_show" model="ir.rule">
@@ -13,6 +18,10 @@
             <field name="model_id" ref="account.model_account_invoice"/>
             <field name="groups" eval="[(4, ref('group_show_only_my_invoice'))]"/>
             <field name="domain_force">[('user_id', '=', user.id)]</field>
+        </record>
+
+        <record id="account.menu_finance_payables" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
         </record>
     </data>
 

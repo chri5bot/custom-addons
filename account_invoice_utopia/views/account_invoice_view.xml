@@ -13,12 +13,27 @@
                     <field name="room_number"/>
                 </xpath>
                 <xpath expr="//field[@name='date_invoice']" position="after">
-                    <!-- Add your fields or attributes here -->
                     <field name="end_time"/>
                 </xpath>
-                <!--<xpath expr="//page[@string='Other information']" position="attributes">-->
-                <!--<attribute name="attrs"></attribute>-->
-                <!--</xpath>-->
+                <xpath expr="//field[@name='price_unit']" position="after">
+                     <field name="price_unit_temp"/>
+                </xpath>
+                <xpath expr="//field[@name='price_unit']" position="replace">
+                    <field name="price_unit" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='fiscal_position']" position="replace">
+                    <field name="fiscal_position" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_account_invoice_utopia_tree" model="ir.ui.view">
+            <field name="name">view.account.invoice.utopia.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_invoice']" position="after">
+                    <field name="room_number"/>
+                </xpath>
             </field>
         </record>
     </data>
